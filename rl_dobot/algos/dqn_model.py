@@ -8,7 +8,7 @@ import torch
 def to_np(x):
     return x.data.cpu().numpy()
 class DQN(nn.Module):
-    def __init__(self, num_action=4):
+    def __init__(self, num_action=3):
         super().__init__()
         self.num_action = num_action
         # batch x  channel x height x width

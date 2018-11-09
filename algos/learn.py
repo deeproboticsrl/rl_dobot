@@ -28,7 +28,7 @@ import torch.nn as nn
 import torch.functional as F
 from rl_dobot.utils import Buffer
 from rl_dobot.utils import hard_update,print_heading,heading_decorator
-from rl_dobot.dqn_model import DQN
+from rl_dobot.algos.dqn_model import DQN
 
 def to_np(x):
     return x.data.cpu().numpy()
@@ -85,7 +85,12 @@ class DQN_LEARN():
             hard_update(self.Q_net,self.target_Q_net)
 
 
-        self.writer.add_scaler("value")
+        self.writer.add_scaler("q_values",q_values.mean(), global_step=update_number)
+        self.writer.add_scaler("qt1_values",q_t1.mean(), global_step=update_number)
+        self.writer.add_scaler("huber_loss",huber_loss.mean(), global_step=update_number)
+        self.writer.add_scaler("error",error.mean(), global_step=update_number)
+
+
 
     def save_model(self, env_name, q_path, info=1):
         if q_path is not None:
@@ -110,6 +115,7 @@ class DQN_LEARN():
 
     def get_action(self, state):
         return self.target_Q_net.get_action(state)
+
 
 
 

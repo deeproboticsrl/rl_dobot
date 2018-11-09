@@ -28,3 +28,12 @@ def gym_torchify(gym_out, is_goal_env=False):
         return new_observation, torch.Tensor([reward]), torch.Tensor([done]), info
     else:
         return torch.Tensor(observation), torch.Tensor([reward]), torch.Tensor([done]), info
+
+def ld_to_dl(batch_list_of_dicts):
+    batch_dict_of_lists = {}
+    for k in batch_list_of_dicts[0].keys():
+        batch_dict_of_lists[k] = []
+    for dictionary in batch_list_of_dicts:
+        for k in batch_list_of_dicts[0].keys():
+            batch_dict_of_lists[k].append(dictionary[k])
+    return batch_dict_of_lists
